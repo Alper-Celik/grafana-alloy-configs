@@ -7,11 +7,11 @@ declare "setup" {
 		endpoint {
 			url = "https://mimir.lab.alper-celik.dev/api/v1/push"
 		}
+	}
 
-		node_collector.node_metrics "hetzner_node_metrics" {
-			arch       = "arm64"
-			host       = "rpi5"
-			forward_to = [prometheus.remote_write.mimir.receiver]
-		}
+	node_collector.node_metrics "hetzner_node_metrics" {
+		arch       = "arm64"
+		host       = "rpi5"
+		forward_to = [prometheus.remote_write.mimir.receiver]
 	}
 }
