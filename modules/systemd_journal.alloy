@@ -1,0 +1,31 @@
+declare "systemd_journal" {
+	argument "host" { }
+
+	argument "arch" { }
+
+	argument "forward_to" { }
+
+	loki.relabel "labels" {
+		forward_to = argument.forward_to.value
+
+		rule {
+			target_label = "host"
+			replacement  = argument.host.value
+		}
+
+		rule {
+			target_label = "arch"
+			replacement  = argument.arch.value
+		}
+
+		rule {
+			source_labels = ["__journal__systemd_unit"]
+			target_label  = "unit"
+		}
+	}
+
+	loki.source.journal "system" {
+		forward_to = [loki.relabel.labels.receiver]
+		max_age    = "168h"
+	}
+}
