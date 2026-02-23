@@ -15,7 +15,7 @@ declare "hetzner_server_1" {
 
 	loki.write "loki" {
 		endpoint {
-			url = "https://loki.lab.alper-celik.dev/ready"
+			url = "https://loki.lab.alper-celik.dev/loki/api/v1/push"
 		}
 	}
 

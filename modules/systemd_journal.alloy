@@ -26,6 +26,6 @@ declare "systemd_journal" {
 
 	loki.source.journal "system" {
 		forward_to = [loki.relabel.labels.receiver]
-		max_age    = "12h"
+		max_age    = "168h"
 	}
 }
