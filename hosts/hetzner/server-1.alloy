@@ -2,12 +2,12 @@ import.file "node_collector" {
 	filename = file.path_join(module_path, "../../modules/node_collector.alloy")
 }
 
-declare "setup" {
-	prometheus.remote_write "mimir" {
-		endpoint {
-			url = "https://mimir.lab.alper-celik.dev/api/v1/push"
-		}
+prometheus.remote_write "mimir" {
+	endpoint {
+		url = "https://mimir.lab.alper-celik.dev/api/v1/push"
+	}
 
+	declare "setup" {
 		node_collector.node_metrics "hetzner_node_metrics" {
 			arch       = "arm64"
 			host       = "hetzner-server-1"

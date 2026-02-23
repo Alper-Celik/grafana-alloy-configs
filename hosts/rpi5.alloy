@@ -1,4 +1,3 @@
-
 import.file "node_collector" {
 	filename = file.path_join(module_path, "../modules/node_collector.alloy")
 }
