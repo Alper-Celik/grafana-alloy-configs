@@ -1,6 +1,6 @@
-declare "setup" {
+declare "rpi5" {
 	import.file "node_collector" {
-		filename = file.path_join(module_path, "../modules/node_collector.alloy")
+		filename = file.path_join(module_path, "modules/node_collector.alloy")
 	}
 
 	prometheus.remote_write "mimir" {
