@@ -1,0 +1,37 @@
+declare "setup" {
+	prometheus.remote_write "mimir" {
+		endpoint {
+			url = "https://mimir.lab.alper-celik.dev/api/v1/push"
+		}
+	}
+
+	prometheus.exporter.unix "node" {
+		enable_collectors = ["drm", "logind", "processes", "systemd", "wifi"]
+
+		systemd {
+			start_time   = true
+			task_metrics = true
+			unit_exclude = ""
+		}
+	}
+
+	discovery.relabel "labels" {
+		targets = prometheus.exporter.unix.node.targets
+
+		rule {
+			target_label = "host"
+			replacement  = "hetzner-server-1"
+		}
+
+		rule {
+			target_label = "arch"
+			replacement  = "arm64"
+		}
+	}
+
+	prometheus.scrape "node" {
+		targets         = discovery.relabel.labels.output
+		forward_to      = [prometheus.remote_write.mimir.receiver]
+		scrape_interval = "10s"
+	}
+}
