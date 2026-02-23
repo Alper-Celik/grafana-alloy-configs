@@ -1,5 +1,6 @@
+
 import.file "node_collector" {
-	filename = file.path_join(module_path, "../../modules/node_collector.alloy")
+	filename = file.path_join(module_path, "../modules/node_collector.alloy")
 }
 
 declare "setup" {
@@ -10,7 +11,7 @@ declare "setup" {
 
 		node_collector.node_metrics "hetzner_node_metrics" {
 			arch       = "arm64"
-			host       = "hetzner-server-1"
+			host       = "rpi5"
 			forward_to = [prometheus.remote_write.mimir.receiver]
 		}
 	}
