@@ -26,9 +26,15 @@ declare "systemd_journal" {
 		}
 
 		rule {
-			source_labels = ["__journal_syslog_identifier"]
+			source_labels = ["__journal__syslog_identifier"]
 			target_label  = "syslog_id"
 		}
+
+rule {
+    action = "labelmap"
+    regex  = "__journal__(.*)"
+    replacement = "debug_$1"
+}
 	}
 
 	loki.source.journal "system" {
