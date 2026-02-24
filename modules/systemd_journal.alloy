@@ -21,6 +21,13 @@ declare "systemd_journal" {
 		rule {
 			source_labels = ["__journal__systemd_unit"]
 			target_label  = "unit"
+			regex         = "(.*)"
+			replacement   = "$1"
+		}
+
+		rule {
+			source_labels = ["__journal_syslog_identifier"]
+			target_label  = "syslog_id"
 		}
 	}
 
