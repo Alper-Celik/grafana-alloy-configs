@@ -6,7 +6,7 @@ declare "systemd_journal" {
 	argument "forward_to" { }
 
 	loki.relabel "labels" {
-		forward_to = argument.forward_to.value
+		forward_to = []
 
 		rule {
 			target_label = "host"
@@ -30,15 +30,16 @@ declare "systemd_journal" {
 			target_label  = "syslog_id"
 		}
 
-rule {
-    action = "labelmap"
-    regex  = "__journal__(.*)"
-    replacement = "debug_$1"
-}
+		rule {
+			action      = "labelmap"
+			regex       = "__journal__(.*)"
+			replacement = "debug_$1"
+		}
 	}
 
 	loki.source.journal "system" {
-		forward_to = [loki.relabel.labels.receiver]
-		max_age    = "168h"
+		forward_to    = [argument.forward_to.value]
+		relabel_rules = loki.relabel.labels.receiver
+		max_age       = "168h"
 	}
 }
