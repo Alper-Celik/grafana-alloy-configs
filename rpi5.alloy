@@ -7,6 +7,10 @@ declare "rpi5" {
 		filename = file.path_join(module_path, "modules/systemd_journal.alloy")
 	}
 
+	import.file "nginx" {
+		filename = file.path_join(module_path, "modules/nginx.alloy")
+	}
+
 	prometheus.remote_write "mimir" {
 		endpoint {
 			url = "https://mimir.lab.alper-celik.dev/api/v1/push"
@@ -26,6 +30,12 @@ declare "rpi5" {
 	}
 
 	logs.systemd_journal "rpi5_journal" {
+		arch       = "arm64"
+		host       = "rpi5"
+		forward_to = [loki.write.loki.receiver]
+	}
+
+	nginx.nginx "nginx_logs" {
 		arch       = "arm64"
 		host       = "rpi5"
 		forward_to = [loki.write.loki.receiver]
