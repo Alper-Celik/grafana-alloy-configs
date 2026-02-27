@@ -24,6 +24,11 @@ declare "node_metrics" {
 		}
 
 		rule {
+			target_label = "nodename"
+			replacement  = argument.host.value
+		}
+
+		rule {
 			target_label = "arch"
 			replacement  = argument.arch.value
 		}
@@ -32,6 +37,6 @@ declare "node_metrics" {
 	prometheus.scrape "node" {
 		targets         = discovery.relabel.labels.output
 		forward_to      = argument.forward_to.value
-		scrape_interval = "10s"
+		scrape_interval = "15s"
 	}
 }
