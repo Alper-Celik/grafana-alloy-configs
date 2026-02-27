@@ -30,4 +30,32 @@ declare "rpi5" {
 		host       = "rpi5"
 		forward_to = [loki.write.loki.receiver]
 	}
+
+	// openwrt
+	prometheus.scrape "openwrt_cuddy" {
+		targets         = discovery.relabel.labels_openwrt_cuddy.output
+		forward_to      = [prometheus.remote_write.mimir.receiver]
+		scrape_interval = "15s"
+	}
+
+	discovery.relabel "labels_openwrt_cuddy" {
+		targets = [{
+			__address__ = "172.25.42.1:9100",
+		}]
+
+		rule {
+			target_label = "host"
+			replacement  = "openwrt_cuddy"
+		}
+
+		rule {
+			target_label = "nodename"
+			replacement  = "openwrt_cuddy"
+		}
+
+		rule {
+			target_label = "arch"
+			replacement  = "arm64"
+		}
+	}
 }
