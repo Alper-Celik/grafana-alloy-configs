@@ -11,6 +11,10 @@ declare "rpi5" {
 		filename = file.path_join(module_path, "modules/nginx.alloy")
 	}
 
+	import.file "otelcol" {
+		filename = file.path_join(module_path, "modules/otelcol.alloy")
+	}
+
 	prometheus.remote_write "mimir" {
 		endpoint {
 			url = "https://mimir.lab.alper-celik.dev/api/v1/push"
@@ -39,6 +43,13 @@ declare "rpi5" {
 		arch       = "arm64"
 		host       = "rpi5"
 		forward_to = [loki.write.loki.receiver]
+	}
+
+	otelcol.otelcol "otelcol" {
+		arch             = "arm64"
+		host             = "rpi5"
+		forward_to_loki  = [loki.write.loki.receiver]
+		forward_to_mimir = [prometheus.remote_write.mimir.receiver]
 	}
 
 	// openwrt
